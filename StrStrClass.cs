@@ -37,4 +37,63 @@ public class Solution
         }
         return firstIndex;
     }
+
+    //DifferentSolution
+
+        // lps ==> longest prefix suffix
+    // TC => O(m+n)
+    // SC => O(n)
+    public int StrStr(string haystack, string needle){
+        if(needle == null || needle.Length == 0 || haystack.Length < needle.Length){
+            return -1;
+        }
+
+        int m = haystack.Length;
+        int n = needle.Length;
+        int i = 0, j = 0;
+        int[] lps = Lps(needle);
+        while(i < m){
+            if(haystack[i] == needle[j]){
+                i++;
+                j++;
+                if(j == n){
+                    return i - n;
+                }
+            }
+            else{
+                if(j > 0){
+                    j = lps[j-1];
+                }
+                else if(j == 0){
+                    i++;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public int[] Lps(string needle){
+        int n = needle.Length;
+        int[] lps = new int[n];
+        int i = 1, j= 0;
+        lps[0] = 0;
+        while(i < n){
+            if(needle[i] == needle[j]){
+                j++;
+                lps[i] = j;
+                i++;
+            }
+            else{
+                if(j > 0){
+                    j = lps[j-1];
+                }
+                else if(j == 0){
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
 }
+
